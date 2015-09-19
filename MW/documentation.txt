@@ -1,0 +1,40 @@
+METEOR WHITE DOCUMENTATION
+
+You can see it online. Just visit mwhite.meteor.com. 
+
+If you want to run it locally, you will need to install Meteor, then I think just cd to the project directory and run meteor. It runs faster locally. Meteor's documentation for how to run the project will be better than my own. 
+
+To see it work Meteor's magic, open two or more browser windows pointing to the same implementation (e.g., the website, draw something, and watch it draw in realtime in the other window). Cool right?
+
+Controls: 
+- Drawing: Press/drag mouse or simply draw on a touchscreen.
+- Deleting lines: Press backslash. This is important b/c too many lines create lag. 
+- Changing colors: Use the color menu in the top-right.
+- WASD keys: scroll the view up/down/left/right
+
+And that's it!
+
+How it works:
+	
+	The screen is composed of two parts:
+		A canvas element (the whole screen)
+		A color button (at the top left)
+
+	Clicking & dragging on the canvas element draws a vector object
+		That vector object is added to a MongoDB collection 
+		The vector object is updated on mousedrag and so is its database entry
+
+	MongoDB
+		Meteor.js automatically creates/manages the Database
+
+	Realtime Reactivity
+		Meteor.js is based on this concept of "reactive programming"
+		See http://docs.meteor.com/#reactivity
+		Meteor's Deps.autorun is run by each client everytime the database changes (e.g., mousedown, mousedrag, mouseup)
+			This function removes all vectors from the current canvas
+			It then retreives all vectors in the database
+			It then adds all vectors that overlap with the current view (e.g., the client's screen adjusted by scrolling with WASD keys) to the current canvas and redraws the canvas
+			THIS IS VERY EXPENSIVE / CAUSES LAG
+			Most of this lag occurs on the CLIENT, not because of the database query. 
+				I know this because it runs smoothly on my Macbook Pro, but not smoothly on my Acer
+			Most of the lag occurs during MouseDrag, because this is performed repeatedly during Mousedrag

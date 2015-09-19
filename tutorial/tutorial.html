@@ -1,0 +1,40 @@
+<!-- simple-todos.html -->
+<head>
+  <title>Todo List</title>
+</head>
+
+<template name='home'>
+    <div class="container">
+	<header>
+	  <h1>Todo List</h1>
+		<!-- add the checkbox to <body> right below the h1 -->
+		<label class="hide-completed">
+		  <input type="checkbox" checked="{{hideCompleted}}" />
+		  Hide Completed Tasks
+		</label>
+		{{> loginButtons}}
+
+	  <!-- add a form below the h1 -->
+		  <form class="new-task">
+		    <input type="text" name="text" placeholder="Type to add new tasks" />
+		  </form>
+	</header>
+
+    <ul>
+      {{#each tasks}}
+      hello
+        {{> task}}
+      {{/each}}
+    </ul>
+  </div>
+</template>
+
+<!-- replace the existing task template with this code -->
+<template name="task">
+  <li class="{{#if checked}}checked{{/if}}">
+    <button class="delete">&times;</button>
+
+    <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
+	<span class="text"><!--<strong>{{username}}</strong> - -->{{text}}</span>
+  </li>
+</template>

@@ -1,0 +1,33 @@
+METEOR WHITE DESIGN DOCUMENT
+
+MeteorWhite is a prototype for an online realtime collaborative whiteboard.
+
+Choice: Using Javascript
+Before starting I had some experience with HTML/CSS, but zero experience with Javascript. Meteor was made in Javascript using the HTML5 Canvas element because I wanted it to be online and accessible via a web browser on both PCs and tablets. No other language could have done this without having the user install some additional plug-in for their browser. For example, it might have operated much more smoothly using Adobe Air or Microsoft Silverlight, but those would also prevent many users from actually using it. Using Javascript will also allow for it to be easily made into a mobile app (and in fact, the website does work on my mobile phone).
+
+Choice: Using a drawing library
+I needed to choose a library with which to draw on the HTML Canvas. Native drawing would have been unworkable, because there is no native support for objects, and programming them myself would have taken ages. Libraries like paper.js, raphael.js, and kinetic.js had premade DOMs and methods. Objects were necessary in order to allow for collaboration (users manipulating different objects -- if everything were a raster, both users would have to be editing the same object, and I don't know how that would work, or if it even could).
+
+Choice: Using Paper.js
+Paper.js provides a DOM model for Canvas objects and several very useful methods for drawing them. I tested several libraries and chose Paper because it seemed to offer the best performance and most useful drawing and object manipulation methods.
+
+Choice: Drawing fancy paths
+Simple lines are boring. MeteorWhite detects the speed of the mouse / touch and alters the line width based on it. This makes objects take up a lot more room in memory (because they are actually very thin elongated blobs), but it looks nice!
+
+Choice: Making my own flyout color menu
+I learned some CSS3 doing this. Also learned some LESS and SASS for this. No third party buttons were found within a quick search that were appropriate, so I just made my own... it took a few hours.
+
+Choice: Using Meteor.js
+There was no other way to make this truly collaborative given the time frame and my limited understanding of Javacsript and server-side functionality. MeteorWhite is Single Page Application, and lines are updated in real-time! Just open two browser windows and check it out! This incredible effect is only possible due to Meteor.js, which took me many hours to learn to work properly, but I think was definitely worth it.
+
+Choice: Using JQuery: Why not... though I barely used it
+
+Choice: Using Pusher.js: This library is used to manipulate colors. You can add/subtract from RGB values, so this was to randomize the colors of the lines a bit. You can barely see the effect.
+
+Choice: Using Classie.js: This library is used to add/remove css classes from html elements. It was nice to have for the color menu. I'm not sure how else I would have done it. 
+
+Not a choice: Having to remove Hammer.js functionality
+Before Meteor.js functionality was added, the whiteboard could be zoomed/scrolled infitely using multi-touch gestures. This was done by combining the Hammer.js library's multitouch events and Paper.js's scale and move methods. However, for whatever reason, I couldn't get it to work without crashing in Meteor, and did not have enough time to figure out why.
+
+Not a choice: Having to remove / retreive / and redraw ALL objects on each database update (e.g., on each mousedrag! this is VERY VERY expensive)
+This was due to a time constraint / lack of understanding about how Meteor updates. I could have kept track of the lines that were already drawn and only update when there is a new line, BUT this would have broken the real time line-being-drawn functionality. I could have created a difficult work around, but that would have taken time, and it's my impression that this can be fixed with only a few lines of code, if I knew them.
